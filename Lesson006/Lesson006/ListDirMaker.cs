@@ -17,12 +17,17 @@ namespace Lesson006
 
             //Console.WriteLine("Введите полный путь файла, в который необходимо сохранить дерево содержимого каталога");
             string SavePathIter = @"C:\Git\Lessons\DirsIter.txt";
+            string SavePathRec = @"C:\Git\Lessons\DirsRec.txt";
             //string SavePath = Console.ReadLine();
 
-            ShowDirIter(SomePath, SavePathIter);
+            //ShowDirIter(SomePath, SavePathIter);
 
             Console.WriteLine("Содержимое файла с деревом созданным итерационно");
-            ShowFile(SavePathIter);
+            //ShowFile(SavePathIter);
+
+            Console.WriteLine("Содержимое файла с деревом созданным рекурсивно");
+            ShowDirRec(SomePath, SavePathRec, 0);
+            ShowFile(SavePathRec);
         }
         static void ShowDirIter(string SomePath001, string SavePath001)
         {
@@ -61,7 +66,7 @@ namespace Lesson006
                 //string Spaces = new string(' ', Tempo.Length - RootElements.Length);
                 string Spaces = FillString("| ", Tempo.Length - RootElements.Length);
                 //Console.WriteLine(Spaces + Tempo[Tempo.Length - 1]);
-                File.AppendAllText(SomePath001, Spaces + Tempo[Tempo.Length - 1] + Environment.NewLine);
+                File.AppendAllText(SavePath001, Spaces + Tempo[Tempo.Length - 1] + Environment.NewLine);
                 
                 string FileSpaces;
                 List<string> ListFile = new List<string> { };
@@ -100,6 +105,86 @@ namespace Lesson006
             string FileContent = File.ReadAllText(PathFile);
             Console.WriteLine(FileContent);
         }
-    }
-    
+
+        static void ShowDirRec(string SomePath, string SavePath001, int Level)
+        {
+            string Shifter = FillString("| ", Level);
+            string[] SomeDir = Directory.GetDirectories(SomePath);
+            
+            for (int i = 0; i < SomeDir.Length; ++i)
+            {
+                DirectoryInfo DName = new DirectoryInfo(SomeDir[i]);
+
+                //Console.WriteLine(Shifter + DName.Name);
+                File.AppendAllText(SavePath001, Shifter + DName.Name + Environment.NewLine);
+                ShowDirRec(SomeDir[i], SavePath001, Level + 1);
+                /*
+                //Console.WriteLine(Shifter + DName.Name);
+                if (SomeDir[i] == SomeDir[SomeDir.Length - 1])
+                {
+                    //Shifter += "└──";
+                    Console.WriteLine(Shifter + DName.Name);
+                    ShowDirRec(SomeDir[i], SavePath, Shifter);
+                }
+                else
+                {
+                    //Shifter += "  ";
+                    Console.WriteLine(Shifter + DName.Name);
+                    ShowDirRec(SomeDir[i], SavePath, Shifter);
+                }*/
+            }
+
+            if (SomeDir.Length < 1)
+            {
+                Shifter = FillString("| ", Level - 1);
+            }
+
+            WriteListInFile(Shifter, SomePath, SavePath001);
+
+            /*
+            string[] SomeFile = Directory.GetFiles(SomePath);
+            string FileShifter;
+
+            for (int i = 0; i < SomeFile.Length; ++i)
+            {
+                //Console.WriteLine(Shifter + Path.GetFileName(SomeFile[i]));
+                if (SomeFile[i] == SomeFile[SomeFile.Length - 1])
+                {
+                    FileShifter = Shifter + "└──";
+                    Console.WriteLine(FileShifter + Path.GetFileName(SomeFile[i]));
+                }
+                else
+                {
+                    FileShifter = Shifter + "├──";
+                    Console.WriteLine(FileShifter + Path.GetFileName(SomeFile[i]));
+                }
+                //Console.WriteLine(File);
+                //File.AppendAllText(SavePath, File + Environment.NewLine);
+            }*/
+        }
+
+        static void WriteListInFile(string Shifter, string SomeDir, string SavePath002)
+        {
+            string FileSpaces;
+            List<string> ListFile = new List<string> { };
+            ListFile.AddRange(Directory.EnumerateFiles(SomeDir));
+            foreach (var CurrentFile in ListFile)
+            {
+                string FileName = Path.GetFileName(CurrentFile);
+                //TotalList.Add(Path.GetDirectoryName(Item)); 
+                //Console.WriteLine(Spaces + FileName);
+                //File.AppendAllText(SavePath, Spaces + FileName + Environment.NewLine);
+                if (CurrentFile == ListFile.Last())
+                {
+                    FileSpaces = Shifter + "└──";
+                    File.AppendAllText(SavePath002, FileSpaces + FileName + Environment.NewLine);
+                }
+                else
+                {
+                    FileSpaces = Shifter + "├──";
+                    File.AppendAllText(SavePath002, FileSpaces + FileName + Environment.NewLine);
+                }
+            }
+        }
+    }    
 }
