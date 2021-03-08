@@ -9,11 +9,22 @@ namespace Lesson006
 {
     class ListDirMaker
     {
-        static void LaunchDirWriters(string SomePath, string SavePath)
+        static public void LaunchDirWriters()
         {
-            ShowDirIter(SomePath, SavePath);
+            //Console.WriteLine("Введите полный путь до папки, содержимое которой необходимо отобразить");
+            string SomePath = @"C:\Git\Lessons\Lesson001";
+            //string SomePath = Console.ReadLine();
+
+            //Console.WriteLine("Введите полный путь файла, в который необходимо сохранить дерево содержимого каталога");
+            string SavePathIter = @"C:\Git\Lessons\DirsIter.txt";
+            //string SavePath = Console.ReadLine();
+
+            ShowDirIter(SomePath, SavePathIter);
+
+            Console.WriteLine("Содержимое файла с деревом созданным итерационно");
+            ShowFile(SavePathIter);
         }
-        static public void ShowDirIter(string SomePath001, string SavePath001)
+        static void ShowDirIter(string SomePath001, string SavePath001)
         {
             if(!Directory.Exists(SomePath001))
             {
@@ -31,16 +42,8 @@ namespace Lesson006
             while (ListDire.Count > 0)
             {
                 string CurrentDir = ListDire[ListDire.Count - 1]; 
-                ListDire.RemoveAt(ListDire.Count - 1);
-
-                //Console.WriteLine(Path.GetDirectoryName(CurrentDir));
-                //File.AppendAllText(SaveDir, CurrentDir + Environment.NewLine);
+                ListDire.RemoveAt(ListDire.Count - 1);                
                 ListDire.AddRange(Directory.EnumerateDirectories(CurrentDir));
-
-                //CurrentDir = Path.GetDirectoryName(CurrentDir);
-                //Console.WriteLine(CurrentDir);
-
-                //TotalList.Add(CurrentDir);
                 TotalStack.Push(CurrentDir);
             }
 
@@ -51,8 +54,7 @@ namespace Lesson006
            
             string[] RootElements = SomePath001.Split('\\');
             foreach (var Dire in TotalList.Reverse())
-            {                
-
+            {
                 string[] Tempo = Dire.Split('\\');
                 //File.AppendAllText(SavePath, Item + Environment.NewLine);
                 //File.AppendAllText(SavePath, Item + Environment.NewLine);
@@ -91,6 +93,12 @@ namespace Lesson006
                 Tempo += SomeString;
             }
             return Tempo;
+        }
+
+        static void ShowFile(string PathFile)
+        {
+            string FileContent = File.ReadAllText(PathFile);
+            Console.WriteLine(FileContent);
         }
     }
     

@@ -25,7 +25,7 @@ namespace Lesson006
                 switch (i)
                 {
                     case 0:
-                        ListDirMaker.ShowDirIter(@"C:\Git\Lessons\Lesson001", "Dires001.txt");
+                        ListDirMaker.LaunchDirWriters();
                         break;
                     case 1:
 
