@@ -8,16 +8,16 @@ namespace Lesson0061
     {
         static void Main(string[] args)
         {
-            int CountPars = 1;
+            int CountPars = 2;
             string[] Denuntiatio = new string[]
             {
                 "Запись содержимого папки по указанному пути в файл",
-                "Запись даты в файл построчно",
+                "Список задач",
                 "Запись набора числе в бинарный файл"
             };
             //Console.WriteLine(System.Text.Encoding.Default.HeaderName);
             //Цикл-обработчик каждого задания
-            for (int i = 0; i < CountPars; ++i)
+            for (int i = 1; i < CountPars; ++i)
             {
                 //Вывод части и названия задания
                 Console.WriteLine($"Часть {i + 1}: {Denuntiatio[i]}");
@@ -28,7 +28,7 @@ namespace Lesson0061
                         ListDirMaker.LaunchDirWriters();
                         break;
                     case 1:
-
+                        Tasker();
                         break;
                 }
                 if (i == 2)
@@ -51,6 +51,29 @@ namespace Lesson0061
             }
         }
 
+        static void Tasker()
+        {
+            ToDo NewTask001 = new ToDo();
+            NewTask001.AddTask("Wake Up Alive");
+            NewTask001.AddTask("Eat");
+            NewTask001.AddTask("Do some Stuff");
+            NewTask001.AddTask("Belive in MySelf");
+
+            NewTask001.MarkTask(3);
+
+            Console.WriteLine("Содержимое созданных задач" + Environment.NewLine);
+            NewTask001.ShowTasks();
+
+
+            NewTask001.DeleteMarkedTasks();
+            JsonPacker.Save<ToDo>(NewTask001, "Tasks.json");
+
+            Console.WriteLine("Содержимое сохранённого файла" + Environment.NewLine);
+            JsonPacker.Load<ToDo>(NewTask001, "Tasks.json");
+
+            NewTask001.ShowTasks();
+        }
+        /*
         static void ShowDir()
         {
             Console.WriteLine("Введите путь папки");
@@ -98,7 +121,7 @@ namespace Lesson0061
             foreach (var Item in TotalList)
             {
                 File.AppendAllText(SavePath, Item + Environment.NewLine);
-            }*/
+            }*//*
         }
         static void ShowDirRec(string SomePath, string SavePath, string Shifter)
         {
@@ -155,9 +178,9 @@ namespace Lesson0061
                 }
                 //Console.WriteLine(File);
                 //File.AppendAllText(SavePath, File + Environment.NewLine);
-            }*/
+            }
 
             //C:\Git\Lessons\Lesson001
-        }
+        }*/
     }
 }

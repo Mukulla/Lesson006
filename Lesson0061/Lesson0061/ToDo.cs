@@ -8,59 +8,68 @@ using MyLib;
 
 namespace Lesson0061
 {
-    struct Str_Task
-    {
-        public string Title;
-        public bool IsDone;        
-    }
     [Serializable]
     class ToDo
     {
-        private Str_Task[] Tasks001;
-        private int Length{ get;}
+        private List<string> Title = new List<string> { };
+        private List<bool> IsDone = new List<bool> { };
+        private int Length;
 
-        private Str_Task Zero = SetStr(" ", false);
+        private string Zero = " ";
 
         public ToDo()
         {
-            Tasks001 = new Str_Task[1];
-            Length = 1;
-        }
-        public ToDo( int Size )
-        {
-            if(Size < 1)
-            {
-                Size = 1;
-            }
-            Length = Size;
-            Tasks001 = new Str_Task[Size];
+            Length = 0;
         }
 
-        public Str_Task this[int Index]
+        public void AddTask(string NewTask001)
         {
-            set 
+            Title.Add(NewTask001);
+            IsDone.Add(false);
+            ++Length;
+        }
+
+        public void MarkTask(int NumberTask001)
+        {
+            if(NumberTask001 >= 0 && NumberTask001 < Title.Count())
             {
-                if (MyFunc.IsInBorders(ref Index, Length))
+                IsDone[NumberTask001] = true;
+            }            
+        }
+
+        public void DeleteMarkedTasks()
+        {
+            for (int i = 0; i < Length; ++i)
+            {
+                if (IsDone[i])
                 {
-                    Tasks001[Index] = value;
+                    IsDone.RemoveAt(i);
+                    Title.RemoveAt(i);
                 }
             }
-            get
+        }
+
+        public void ShowTasks()
+        {            
+            int Number = 0;
+            string Marker = "[X]";
+
+            foreach (var CurrentTask in Title)
             {
-                if (MyFunc.IsInBorders(ref Index, Length))
+                if(IsDone[Number])
                 {
-                    return Tasks001[Index];
+                    Marker = "[X]";
+                    //Console.WriteLine("{ 0,3}: { 1,3}, { 2}", Number, Marker, CurrentTask);
+                    Console.WriteLine($"{ Number, 3} { Marker,4} { CurrentTask, 19}");
                 }
-                return Zero;
+                else
+                {
+                    Marker = " ";
+                    Console.WriteLine($"{ Number, 3} { Marker, 4} { CurrentTask, 19}");
+                    //Console.WriteLine($"{Number} {Marker} {CurrentTask}");
+                }
+                ++Number;
             }
-        }
-        
-        static public Str_Task SetStr( string SomeTitle, bool SomeDone)
-        {
-            Str_Task Tempo = new Str_Task();
-            Tempo.Title = SomeTitle;
-            Tempo.IsDone = SomeDone;
-            return Tempo;
-        }
+        }        
     }
 }

@@ -3,36 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
-//using System.Text.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lesson0061
 {
-    class PackToDo
+    class JsonPacker
     {
-        private ToDo[] WhatDo;
-        private string Marker = "[X]";
-
-        public void MakeTasks(int Size)
+        static public void Load<T>(T SomeTasks001, string SomePath)
         {
-            if(Size < 1)
+            if (!File.Exists(SomePath))
             {
-                Size = 1;
-            }
-            WhatDo = new ToDo[Size];
-        }
-        public void WriteTask(int Index, string Task001)
-        {
-            WhatDo[Index] = ToDo.SetStr(Task001, false);
-            WhatDo = Task001;
-        }
-        public void Load(string SomePath)
-        {
-            if (!Directory.Exists(SomePath))
-            {
-                Console.WriteLine("Такого каталога нет");
+                Console.WriteLine("Такого файла не существует");
                 return;
             }
+
+            //string JsonFile = File.ReadAllText("house.json");
+            string JsonFile = File.ReadAllText(SomePath);
+            SomeTasks001 = JsonSerializer.Deserialize<T>(JsonFile);
+        }
+
+        static public void Save<T>(T SomeTasks001, string SomePath)
+        {
+            string json = JsonSerializer.Serialize(SomeTasks001);
+            File.WriteAllText(SomePath, json);
         }
     }
 }
